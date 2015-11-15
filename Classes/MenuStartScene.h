@@ -8,7 +8,7 @@ public:
 	static cocos2d::Scene* createScene();
 
 	virtual bool init();
-
+	int prueba;
  
 	void goToMainMenuScene(Ref *pSender);
 	void goToLogrosScene(Ref* pSender);
