@@ -3,26 +3,42 @@
 #include "cocos2d.h"
 
 
- 
-class Arma: public cocos2d::Sprite
+
+class Arma : public cocos2d::Sprite
 {
 public:
-	Arma();
+	Arma(const std::string & fileName, int daño, std::string nombre, std::string tipo);
 	~Arma();
-	static Arma* create(const std::string &fileName,int daño, std::string nombre,std::string tipo);
+	static Arma* create(const std::string &fileName, int daño, std::string nombre, std::string tipo);
 
-	//void initOptions();
+	//void initOptions(cocos2d::Rect area);
 
-	void addListener();
-	void touchEvent(cocos2d::Touch* touch, cocos2d::Point _p);
-	void createMenuCompra();
-	void closeMenuCompra();
-	void hacerCompra();
+	void AddListener();
+	void TouchEvent(cocos2d::Touch* touch, cocos2d::Point _p);
+	void CreateMenuCompra();
+	void CloseMenuCompra();
+	void HacerCompra();
+	void setPointY(int y);
+
+
+	void setArma(Arma* arma);
+	Arma* getArma();
+
+	std::string getTipo();
+	std::string getNombre();
+	int getDaño();
+	bool getDesdeTienda();
+	void setDesdeTienda(bool estado);
+
 private:
-	int Daño;
-	std::string Tipo;
-	std::string Nombre;
+	bool desdeTienda;
+	int daño;
+	int toqueY;
+	//cocos2d::Rect areaArma;
+	std::string tipo;
+	std::string nombre;
 	Arma* armaAComprar;
+
 
 };
 

@@ -1,5 +1,7 @@
 #include "LevelsMenuScene.h"
-#include "Nivel.h"
+#include "proj.win32\Nivel.h"
+#include "proj.win32\Global.h"
+#include "Arma.h"
 USING_NS_CC;
 
 Scene* LevelsMenuScene::createScene()
@@ -12,7 +14,6 @@ Scene* LevelsMenuScene::createScene()
 
 	// add layer as a child to scene
 	scene->addChild(layer);
-
 
 	// return the scene
 	return scene;
@@ -29,6 +30,7 @@ bool LevelsMenuScene::init()
 	}
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+
 	//meter imagenes mundos en array
 	Sprite* mundo1 = Sprite::create("images/LevelsMenuScene/mundo1.png");
 	imagenesMundos.push_back(mundo1);
@@ -41,15 +43,43 @@ bool LevelsMenuScene::init()
 	Sprite* mundo5 = Sprite::create("images/LevelsMenuScene/mundo2.png");
 	imagenesMundos.push_back(mundo5);
 
+
 	mundoSeleccionado = 0;
 
-
 	for (int i = 0; i < 5; i++){
-
 		imagenesMundos[i]->setPosition(Point(visibleSize.width/2, visibleSize.height/2));
 		addChild(imagenesMundos[i],2);
 		if (i+1 != 1) imagenesMundos[i]->setVisible(false);
 	}
+
+	// array btn
+	for (int i = 0; i < 25;i++){
+
+		//INTENTO 1
+		/*auto img = Sprite::create("images/LevelsMenuScene/back_btn.png");
+		img->setColor(Color3B(i * 10,i*10, i*10));
+		this->matrizNivelesBtn.push_back(img);
+		matrizNivelesBtn[i]->setPosition(Point(i*10,i*10));
+		//matrizNivelesBtn[i]->setVisible(false);*/
+
+
+		//INTENTO 2
+
+		auto itemimgaux = MenuItemImage::create("images/LevelsMenuScene/back_btn.png", "images/LevelsMenuScene/back_btn.png",
+												CC_CALLBACK_1(LevelsMenuScene::goToNivel,this,i));
+		auto menuaux = Menu::create(itemimgaux, NULL);
+		auto rand = cocos2d::RandomHelper::random_int(100, 230);
+		menuaux->setColor(Color3B( rand, rand, 100));
+		std::string auxstring = "Nivel" + ((char)i);
+		menuaux->setName(auxstring);
+		this->vectorNiveles.push_back(menuaux);
+		this->addChild(vectorNiveles[i],3);
+		vectorNiveles[i]->setVisible(false);
+		
+
+
+	}
+	CCLOG("vector ocupa: %d", vectorNiveles.capacity());
 	
 	
 	//menu
@@ -57,11 +87,11 @@ bool LevelsMenuScene::init()
 	auto backBtn = MenuItemImage::create("images/LevelsMenuScene/back_btn.png", "images/LevelsScene/back_btn.png",
 		CC_CALLBACK_1(LevelsMenuScene::goToMenuStart, this));
 
-	auto startNivelBtn = MenuItemImage::create("images/LevelsMenuScene/back_btn.png", "images/LevelsScene/back_btn.png",
+	/*auto startNivelBtn = MenuItemImage::create("images/LevelsMenuScene/back_btn.png", "images/LevelsScene/back_btn.png",
 		CC_CALLBACK_1(LevelsMenuScene::goToNivel, this));
-	startNivelBtn->setColor(Color3B(1,1,1));
+	startNivelBtn->setColor(Color3B(1,1,1));*/
 
-	auto menu1 = Menu::create(backBtn,startNivelBtn, NULL);
+	auto menu1 = Menu::create(backBtn/*,startNivelBtn*/, NULL);
 	menu1->alignItemsHorizontallyWithPadding(visibleSize.width / 2);
 	menu1->setPositionY(10);
 	addChild(menu1, 2);
@@ -83,7 +113,7 @@ bool LevelsMenuScene::init()
 	background->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
 	addChild(background, 0);
 
-	addlistener();
+
 	return true;
 }
 
@@ -93,73 +123,154 @@ void LevelsMenuScene::goToMenuStart(Ref *pSender){
 	Director::getInstance()->popScene();
 }
 
-void LevelsMenuScene::goToNivel(Ref *pSender){
-	CCLOG("voy a añadir un nivel");
-	/*auto scene = Nivel::createScene();
-	Director::getInstance()->pushScene(scene);*/
-}
-
-void LevelsMenuScene::addlistener()
-{
-	{
-
-		auto listener = cocos2d::EventListenerTouchOneByOne::create();
-		listener->setSwallowTouches(true);
-		listener->onTouchBegan = [&](cocos2d::Touch* touch, cocos2d::Event* event) {
-			cocos2d::Point p = touch->getLocation();
-			cocos2d::Rect rect =Rect(115,80, 568, 444);
-
-			if (rect.containsPoint(p))
-			{
-				return true;
-			}
-
-			return false;
-		};
-		listener->onTouchEnded = [=](cocos2d::Touch* touch, cocos2d::Event* event)
-		{
-			LevelsMenuScene::touchEvent(touch, touch->getLocation());
-		};
-
-		cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 30);
-
-	}
-}
-
-void LevelsMenuScene::touchEvent(cocos2d::Touch * touch, cocos2d::Point _p)
-{
-	LevelsMenuScene::goToNivel(this);
-		
-}
 
 void  LevelsMenuScene::muestraUnoMas(Ref *pSender){
+	CCLOG("%d", mundoSeleccionado);
 	if (mundoSeleccionado < 4){
 	
 		imagenesMundos[mundoSeleccionado]->setVisible(false);
+		ocultaNivelesVisibles(mundoSeleccionado);
 		mundoSeleccionado += 1;
 		imagenesMundos[mundoSeleccionado]->setVisible(true);
 	}
 	else {
 		imagenesMundos[mundoSeleccionado]->setVisible(false);
+		ocultaNivelesVisibles(mundoSeleccionado);
 		mundoSeleccionado = 0;
 		imagenesMundos[mundoSeleccionado]->setVisible(true);
 
 	}
+	addListener();
 }
 
 
 void  LevelsMenuScene::muestraUnoMenos(Ref *pSender){
+	CCLOG("%d", mundoSeleccionado);
+
 	if (mundoSeleccionado > 0){
 
 		imagenesMundos[mundoSeleccionado]->setVisible(false);
+		ocultaNivelesVisibles(mundoSeleccionado);
 		mundoSeleccionado -= 1;
 		imagenesMundos[mundoSeleccionado]->setVisible(true);
 	}
 	else {
 		imagenesMundos[mundoSeleccionado]->setVisible(false);
+		ocultaNivelesVisibles(mundoSeleccionado);
 		mundoSeleccionado = 4;
 		imagenesMundos[mundoSeleccionado]->setVisible(true);
 
 	}
+	addListener();
 
 }
+
+void LevelsMenuScene::addListener(){
+	listener = cocos2d::EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(false);
+	listener->onTouchBegan = [&](cocos2d::Touch* touch, cocos2d::Event* event) {
+	
+	cocos2d::Point p = touch->getLocation();
+	cocos2d::Rect rect = Rect(115, 80, 568, 444);
+
+		if (rect.containsPoint(p)){
+				return true;
+		}
+
+		return false;
+	};
+
+
+	listener->onTouchEnded = [=](cocos2d::Touch* touch, cocos2d::Event* event){
+			LevelsMenuScene::touchEvent(touch, touch->getLocation());
+			Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
+			CCLOG("QUITO LISTENER");
+	};
+
+	cocos2d::Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 30);
+
+}
+
+void LevelsMenuScene::touchEvent(cocos2d::Touch * touch, cocos2d::Point _p)
+{
+
+	//CCLOG("no hay listener")
+	LevelsMenuScene::muestraNivelesBtn();
+}
+
+void LevelsMenuScene::ocultaNivelesVisibles(int mundoseleccionado)
+{
+	for (int i = mundoSeleccionado * 5; i < ((mundoSeleccionado * 5) + 5); i++) {
+		vectorNiveles[i]->setVisible(false);
+	}
+}
+
+void LevelsMenuScene::onEnterTransitionDidFinish()
+{
+	CCLOG("añado LISTENEEEER");
+	addListener();
+}
+
+void LevelsMenuScene::goToNivel(Ref *psender,int i){
+	CCLOG("voy a añadir el nivel %d",i);
+
+	//cocos2d::Director::getInstance()->getEventDispatcher()->removeEventListener(listener);
+	
+
+	Director::getInstance()->pushScene(Global::getInstance()->nivel);
+
+	//Aqui SWITCH con el numero de nivel que es para saber que objetos tenemos que pasarle
+	switch (i)
+	{
+	case 0:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+	case 1:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+	case 2:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+	case 3:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+	case 4:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+	case 5:
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		break;
+
+	default:
+		break;
+	}
+	
+}
+
+
+void LevelsMenuScene::muestraNivelesBtn(){
+
+	for (int i = mundoSeleccionado*5; i < ((mundoSeleccionado * 5)+5); i++) {
+		CCLOG("desde %d hasta %d", i, ((mundoSeleccionado * 5) + 5));
+		vectorNiveles[i]->setPositionX(170 +(568*(i-mundoSeleccionado*5))/5); //((i / 5) * 568)
+		vectorNiveles[i]->setVisible(true);
+
+		//INTENTO 1 -array de imagenes, crear el menuitemimage aqui
+		//auto nivelBtn = MenuItemImage::create();
+		//nivelBtn->setNormalImage(matrizNivelesBtn[i]);
+		//nivelBtn->setSelectedImage(matrizNivelesBtn[i]);
+		//nivelBtn->setCallback(CC_CALLBACK_1(LevelsMenuScene::goToNivel,this,(int)i));
+
+		//auto menu3 = Menu::create(nivelBtn, NULL);
+		//menu3->setPosition(Point(i * 10, i * 10));
+		//this->addChild(menu3);
+
+
+		//INTENTO 2 vector de menuitemimages, solo añadir como hijo y ya. no deja.
+		
+
+	}
+	//CCLOG("capacidad: %d", this->matrizNivelesBtn.capacity());
+
+}
+                      
