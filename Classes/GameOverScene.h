@@ -9,8 +9,7 @@ public:
 
 	virtual bool init();
 
-	void retryLevel(Ref *pSender);
-	void goToMenuStartScene(Ref * pSender);
+
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(GameOverScene);

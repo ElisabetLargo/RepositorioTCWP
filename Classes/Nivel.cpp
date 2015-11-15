@@ -2,7 +2,6 @@
 #include "Nivel.h"
 
 
-
 USING_NS_CC;
 
 Scene* Nivel::createScene(float tiempoMax, int puntosMax, int objetosMoviles[], int posicionesX[], int posicionesY[])
