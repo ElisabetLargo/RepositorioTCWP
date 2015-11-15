@@ -26,8 +26,8 @@ void Global::creaArmas()
 	//provisional crea un array genérico, en un futuro hay que meter las armas 1 a una
 	for (int i = 0; i < 10; i++){
 		char* nombre = "espada Bastarda numero: ";
-		nombre += i;
-		Arma* armaaux = Arma::create("images/Armas/arma.png", 100, nombre, "punzante");
+		nombre += (char)i;
+		Arma* armaaux = Arma::create("images/Armas/arma.png", 100*i, nombre, "punzante");
 		armaaux->setColor(Color3B(i * 25, i * 25, i * 25));
 		armasTotales.push_back(armaaux);
 	}

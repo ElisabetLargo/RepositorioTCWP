@@ -39,11 +39,13 @@ void Arma::AddListener()
 
 	listener->onTouchBegan = [&](cocos2d::Touch* touch, cocos2d::Event* event) {
 		cocos2d::Point p = touch->getLocation();
-		setPointY(p.y);
+
+	
 		cocos2d::Rect rect = this->getBoundingBox();
 
 		if (rect.containsPoint(p))
 		{
+			setPointY(touch->getLocation().y);
 			return true;
 		}
 
@@ -81,6 +83,8 @@ void Arma::HacerCompra()
 
 void Arma::setPointY(int y)
 {
+
+	CCLOG("MI DAÑO ES: %d", this->getDaño());
 	this->toqueY = y;
 }
 
