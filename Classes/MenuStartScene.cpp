@@ -4,7 +4,6 @@
 #include "proj.win32\VestuarioScene.h"
 #include"proj.win32\TiendaScene.h"
 #include"proj.win32\LevelsMenuScene.h"
-#include"proj.win32\arma.h"
 
 
 USING_NS_CC;
@@ -45,16 +44,11 @@ bool MenuStartScene::init()
 	auto tiendaBtn = MenuItemImage::create("images/MenuStartScene/tienda_btn.png", "images/MenuStartScene/tienda_btn.png",
 		CC_CALLBACK_1(MenuStartScene::goToTiendaScene, this));
 	auto levelsBtn = MenuItemImage::create("images/MenuStartScene/levels_btn.png", "images/MenuStartScene/levels_btn.png",
-		CC_CALLBACK_1(MenuStartScene::goToLevelsScene, this));
-	Arma* arma1 = Arma::create("images/Armas/arma.png", 100, "espada bastarda", "punzante");
+		CC_CALLBACK_1(MenuStartScene::goToTiendaScene, this));
 
 	auto menu1 = Menu::create( logrosBtn,vestuarioBtn,tiendaBtn,levelsBtn,NULL);
 	menu1->alignItemsVertically();
 	addChild(menu1, 1);
-	addChild(arma1, 1);
-
-	arma1->setPosition(Point(visibleSize.width - 70, visibleSize.height - 70));
-	
 	
 	auto backBtn = MenuItemImage::create("images/MenuStartScene/back_btn.png", "images/MenuStartScene/back_btn.png",
 			CC_CALLBACK_1(MenuStartScene::goToMainMenuScene,this));
