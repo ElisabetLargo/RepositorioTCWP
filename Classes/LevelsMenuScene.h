@@ -14,21 +14,17 @@ public:
 
 	void goToMenuStart(Ref *pSender);
 	void goToNivel(Ref *pSender);
-	void addlistener();
-	void touchEvent(cocos2d::Touch * touch, cocos2d::Point _p);
 
 
-	
-	int mundoSeleccionado; //Será la posicion del sprite del nivel en el array
+
+
+	/*
+	int nivelSeleccionado; //Será la posicion del sprite del nivel en el array
 	// sirve para identificar el nivel
+	void muestraUnNivelMas();
+	void muestraUnNivelMenos(); //funciones para la seleccion del nivel con dos botones fleacha
 
-	std::vector<cocos2d::Sprite*> imagenesMundos;
-	void muestraUnoMas(Ref *pSender);
-	void muestraUnoMenos(Ref *pSender); //funciones para la seleccion del nivel con dos botones fleacha
-
-private:
-	
-
+	*/
 
 };
 
