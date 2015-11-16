@@ -4,7 +4,9 @@
 #include "proj.win32\VestuarioScene.h"
 #include"proj.win32\TiendaScene.h"
 #include"proj.win32\LevelsMenuScene.h"
-
+#include "proj.win32\Arma.h"
+#include "proj.win32\ObjetoEscenario.h"
+#include "proj.win32\Global.h"
 
 USING_NS_CC;
 
@@ -44,7 +46,19 @@ bool MenuStartScene::init()
 	auto tiendaBtn = MenuItemImage::create("images/MenuStartScene/tienda_btn.png", "images/MenuStartScene/tienda_btn.png",
 		CC_CALLBACK_1(MenuStartScene::goToTiendaScene, this));
 	auto levelsBtn = MenuItemImage::create("images/MenuStartScene/levels_btn.png", "images/MenuStartScene/levels_btn.png",
-		CC_CALLBACK_1(MenuStartScene::goToTiendaScene, this));
+		CC_CALLBACK_1(MenuStartScene::goToLevelsScene, this));
+	//Los listener revientan en funcion de las transiciones, como de momento no vamos a realizar nada con los listenrs y este fragmento de codigo era una prueba
+	//se comenta y se debugueará más adelante
+
+	/*Arma* arma1 = Arma::create("images/Armas/arma.png", 100, "espada bastarda", "punzante");
+	addChild(arma1, 1);
+	arma1->setPosition(Point(visibleSize.width - 70, visibleSize.height - 70));
+
+	ObjetoEscenario* objeto1 = ObjetoEscenario::create("images/ObjetosEscenario/arma.png",100,"espadita");
+	addChild(objeto1, 1);
+	objeto1->setPosition(Point(visibleSize.width -70, visibleSize.height-150));
+	objeto1->setColor(Color3B(0,100,100));*/
+	
 
 	auto menu1 = Menu::create( logrosBtn,vestuarioBtn,tiendaBtn,levelsBtn,NULL);
 	menu1->alignItemsVertically();
@@ -96,7 +110,10 @@ void MenuStartScene::goToTiendaScene(Ref *pSender){
 
 void MenuStartScene::goToLevelsScene(Ref *pSender){
 
-	auto scene = LevelsMenuScene::createScene();
-	Director::getInstance()->pushScene(scene);
+	//Scene* escena= Global::getInstance()->levelsMenuScene;
+	Director::getInstance()->pushScene((Scene*)Global::getInstance()->levelsMenuScene);
+	/*auto scene = LevelsMenuScene::createScene();
+	Director::getInstance()->pushScene(scene);*/
+	
 
 }
