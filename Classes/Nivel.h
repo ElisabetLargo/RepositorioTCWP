@@ -1,6 +1,7 @@
 #ifndef __NIVEL_SCENE_H__
 #define __NIVEL_SCENE_H__
 #include "cocos2d.h"
+#include "Arma.h"
 
 class Nivel : public cocos2d::Layer
 {
@@ -12,11 +13,11 @@ public:
 
 	void returnToScene(Ref *pSender);
 
+	int ContadorArmas;
 
 	int vueltasArsenal;
 	cocos2d::Sprite* rectangulo;
 	void preparaNivel(int n, int u);
-
 	// implement the "static create()" method manually
 	CREATE_FUNC(Nivel);
 
@@ -31,6 +32,8 @@ private:
 	void goToVestuario(Ref *pSender);
 	void goToPause(Ref *pSender);
 	void abrirArsenal(Ref *pSender);
+	void simulacion(Ref *pSender);
+	void displayArmasNivel();
 };
 
 #endif  

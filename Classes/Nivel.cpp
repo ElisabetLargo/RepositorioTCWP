@@ -49,13 +49,22 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 	rectangulo = Sprite::create("images/Nivel/rectangle.png");
 	auto ancho = ANCHOARSENAL;
 	auto alto = ALTOARSENAL;
-
+	
+	ContadorArmas = 0;
 
 	rectangulo->setScaleX(ancho/rectangulo->getContentSize().width);
 	rectangulo->setScaleY(alto/rectangulo->getContentSize().height);
 	rectangulo->setPosition(Point(ancho/2, alto/2));
 	rectangulo->setVisible(false);
 	addChild(rectangulo, 2);
+
+
+	//Arma de prueba arriba
+	Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
+	Arma* a = Arma::create(t, 100, "voladora", "punzante");
+	a->setColor(Color3B(5,50,83));
+	addChild(a, 4);
+	a->setPosition(Point(400,500));
 
 
 	//FONDO Y BOTONES GENERALES
@@ -67,15 +76,18 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 	vestuarioBtn->setColor(Color3B(0, 255, 0));
 
 	auto menu1 = Menu::create(pauseBtn, tiendaBtn, vestuarioBtn, NULL);
-	menu1->setPosition(Point(visibleSize.width / 2, visibleSize.height - visibleSize.height / 40));
-	menu1->alignItemsHorizontallyWithPadding(visibleSize.height / 3);
+	menu1->setPosition(Point(150, visibleSize.height - visibleSize.height / 40));
+	menu1->alignItemsHorizontallyWithPadding(30);
 	addChild(menu1, 1);
 
-	auto arsenalBtn = MenuItemImage::create("images/Nivel/back_btn.png", "images/Nivel/back_btn.png",CC_CALLBACK_1(Nivel::abrirArsenal, this));
+	auto arsenalBtn = MenuItemImage::create("images/Nivel/back_btn.png", "images/Nivel/back_btn.png", CC_CALLBACK_1(Nivel::abrirArsenal, this));
 	arsenalBtn->setColor(Color3B(100, 100, 100));
+	auto simulacionBtn = MenuItemImage::create("images/Nivel/back_btn.png", "images/Nivel/back_btn.png", CC_CALLBACK_1(Nivel::simulacion, this));
+	simulacionBtn->setColor(Color3B(150, 50, 150));
 
-	auto menu2 = Menu::create(arsenalBtn, NULL);
+	auto menu2 = Menu::create(arsenalBtn,simulacionBtn, NULL);
 	menu2->setPosition(Point(visibleSize.width / 2 + visibleSize.width / 3, visibleSize.height / 40));
+	menu2->alignItemsHorizontallyWithPadding(30);
 	addChild(menu2, 1);
 	
 
@@ -99,6 +111,7 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 
 	for (int i = 0; i < Global::getInstance()->armasArsenal.size(); i++) {
 		Arma* arma = Global::getInstance()->armasArsenal[i];
+		arma->enNivel = false;
 		addChild(arma, 3);
 		arma->setVisible(false);
 	}
@@ -111,18 +124,6 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 
 	/*____________________________________________________________________________________________________________*/
 
-
-	/*
-	//OBJETOS DEL ESCENARIO
-
-
-	try{
-	if (sizeof(objetosMoviles) != sizeof(posicionesX) != sizeof(posicionesY)) throw 1;
-	}
-	catch (int e){
-	printf( "Exception: Arrays con diferentes tamaños");
-	}
-	*/
 	//       n= indice primer objeto del nivel    u=numero deobjetos a colocar en el nivel
 	for (int i = n; i < u; i++){
 		addChild(Global::getInstance()->ObjetosTotalesEscenarios[i]);
@@ -135,63 +136,118 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 
 void Nivel::muestraUnoMas(Ref *pSender)
 {
-	if (vueltasArsenal == Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
+
 	auto ancho = ANCHOARSENAL;
 	auto alto = ALTOARSENAL;
 
-	auto size = vueltasArsenal;
+	auto iterador = 0;
+	auto posicion = 0;
+	borraArsenal(-5);
+
+	while (iterador < 5){
+		posicion++;
+		if (vueltasArsenal == Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
+		Arma* arma = Global::getInstance()->armasArsenal[vueltasArsenal];
+		arma->setPosition((((posicion + 1)*ancho) / 7) - arma->getContentSize().width, alto / 2 + 2 * vueltasArsenal);
+		arma->setVisible(true);
+		arma->EnableListener(true);
+		CCLOG("muestro la %d", vueltasArsenal);
+
+		iterador++;
+		vueltasArsenal++;
+
+
+	}
+
+	/*auto size = vueltasArsenal;
 	auto iterador = 0;
 	borraArsenal(-5);
 	for (vueltasArsenal; vueltasArsenal < size + 5; vueltasArsenal++) {
 		iterador++;
 		Arma* arma = Global::getInstance()->armasArsenal[vueltasArsenal];
-		arma->setPosition((((iterador + 1)*ancho) / 7) - arma->getContentSize().width, alto / 2);
+		arma->setPosition((((iterador + 1)*ancho) / 7) - arma->getContentSize().width, alto / 2 + 2 * vueltasArsenal);
 		arma->setVisible(true);
+		arma->EnableListener(true);
 		
-	}
+	}*/
 
-	if (vueltasArsenal+1 >= Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
-
+	//if (vueltasArsenal+1 >= Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
+	CCLOG("vueltasarsenal vale %d", vueltasArsenal);
 }
 
 void Nivel::muestraUnoMenos(Ref *pSender,int i)
 {
 
-	((vueltasArsenal - 10) < 0)?vueltasArsenal = Global::getInstance()->armasArsenal.size() - 5: vueltasArsenal -= 10;
-	
 	auto ancho = ANCHOARSENAL;
 	auto alto = ALTOARSENAL;
-	auto size = vueltasArsenal;
-	auto iterador = 0;
+	int max = 0;
+	Global::getInstance()->armasArsenal.size() >10 ?  max = 10: max =5;
 	borraArsenal(5);
-	for (vueltasArsenal; vueltasArsenal < size + 5; vueltasArsenal++) {
-		iterador++;
 
+	((vueltasArsenal - max) <= 0) ? vueltasArsenal = Global::getInstance()->armasArsenal.size() - 5 : vueltasArsenal -= 10;
+	//auto size = vueltasArsenal;
+	
+	auto iterador = 0;
+	auto posicion = 0;
+
+	while (iterador < 5){
+		posicion++;
+		if (vueltasArsenal == Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
 		Arma* arma = Global::getInstance()->armasArsenal[vueltasArsenal];
-		arma->setPosition((((iterador + 1)*ancho) / 7)-arma->getContentSize().width, alto / 2);
+		arma->setPosition((((posicion + 1)*ancho) / 7) - arma->getContentSize().width, alto / 2 + 2 * vueltasArsenal);
 		arma->setVisible(true);
+		arma->EnableListener(true);
+		CCLOG("muestro la %d", vueltasArsenal);
+		iterador++;
+		vueltasArsenal++;
+
 
 	}
 
 	if (vueltasArsenal > Global::getInstance()->armasArsenal.size()) vueltasArsenal = 0;
-
+	CCLOG("vueltasarsenal vale %d", vueltasArsenal);
 }
 
 void Nivel::borraArsenal(int superiorinferior)
 {
 	auto aux = 0;
-	if (superiorinferior < 0) {
-		((vueltasArsenal + superiorinferior) <0) ? aux = Global::getInstance()->armasArsenal.size() - 5 : aux = vueltasArsenal - 5;
-	}
-	else
-		((vueltasArsenal + superiorinferior)>=Global::getInstance()->armasArsenal.size()) ? aux = 0 : aux = vueltasArsenal + 5;
 
-	auto aux2 = aux;
+
+		(vueltasArsenal ==0) ? aux = Global::getInstance()->armasArsenal.size()-1 : aux = vueltasArsenal-1;
+		auto iterador = aux;
+		auto armasborradas = 0;;
+
+		while (armasborradas<5){
+			if (iterador <0){
+				iterador = Global::getInstance()->armasArsenal.size()-(5-armasborradas);
+			}
+			Arma* arma = Global::getInstance()->armasArsenal[iterador];
+			arma->setVisible(false);
+			arma->EnableListener(false);
+			CCLOG("borro la %d", iterador);
+			iterador--;
+			armasborradas++;
+
+		}
+		
+		/*for (int i = aux; i>aux - 5; i--){
+			
+			Arma* arma = Global::getInstance()->armasArsenal[i];
+			arma->setVisible(false);
+			arma->EnableListener(false);
+			
+		}*/
+
+
+
+
+
+	/*auto aux2 = aux;
 	for (aux; aux < aux2+5; aux++) {
 		//CCLOG("borrador vale %d ", aux);
 		Arma* arma = Global::getInstance()->armasArsenal[aux];
 		arma->setVisible(false);
-	}
+	}*/
 
 }
 
@@ -229,6 +285,27 @@ void Nivel::abrirArsenal(Ref *pSender){
 		rectangulo->setVisible(true);
 		muestraUnoMas(this);
 	} 
+}
 
+
+void Nivel::simulacion(Ref *pSender){
+
+
+	if (ContadorArmas >= 5){
+		CCLOG("Empieza la simulacion");
+	}
+	else{
+		CCLOG("Aun puedes usar más armas");
+	}
 	
+}
+
+void Nivel::displayArmasNivel(){
+
+	for (int i = Global::getInstance()->ArmasNivel.size(); i >0 ; i--){
+		if (Global::getInstance()->ArmasNivel[i] != nullptr){
+			
+		}
+	}
+
 }

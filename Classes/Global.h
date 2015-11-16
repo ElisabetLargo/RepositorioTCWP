@@ -12,10 +12,17 @@ public:
 	static Global* getInstance();
 	cocos2d::Scene* nivel;
 	cocos2d::Scene* levelsMenuScene;
+
 	std::vector<Arma*> armasTotales;
 	std::vector<Arma*> armasArsenal;
+	std::vector<Arma*> ArmasNivel;
+
 	std::vector<ObjetoEscenario*> ObjetosTotalesEscenarios;
 	cocos2d::Size visibleSize;
+	void creaArmasNivel(Arma* a);
+	void vaciaArmasNivel();
+	void quitaArmaDeNivel(Arma* a);
+
 	//std::vector<Vec2*> ObjetosTotalesEscenarioPosiciones;
 	
 
@@ -25,6 +32,8 @@ private:
 	~Global();
 	void creaArmas();
 	void creaObjetosEscenario();
+	
+
 
 };
 
