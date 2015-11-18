@@ -81,7 +81,7 @@ void Arma::accionTouch(){
 
 			((Nivel*)Global::getInstance()->nivel)->ContadorArmas += 1;
 			//llamar a global
-			Global::getInstance()->creaArmasNivel(this);
+			Global::getInstance()->añadeArmasANivel(this->ClonarArma(this));
 			this->enNivel = true;
 		}
 		else if (this->enNivel) CCLOG("ya esta metida");
@@ -95,6 +95,9 @@ void Arma::accionTouch(){
 
 	else {
 		CCLOG("es para colocar");
+		//if (!((Nivel *)Global::getInstance()->nivel)->juegoEnCurso) {
+			Global::getInstance()->quitaArmaDeNivel(this);
+		//}
 	}
 
 
@@ -124,12 +127,12 @@ void Arma::setPointY(int y)
 
 void Arma::setArma(Arma* arma)
 {
-	armaAComprar = arma;
+	esteArma = arma;
 }
 
 Arma* Arma::getArma()
 {
-	return armaAComprar;
+	return esteArma;
 }
 
 std::string Arma::getTipo()
@@ -160,6 +163,7 @@ void Arma::setDesdeTienda(bool estado)
 Arma* Arma::ClonarArma(Arma* a){
 
 	Arma* nueva = Arma::create(a->getTexture(),a->daño,a->getNombre(),a->tipo);
+	nueva->clon = a;
 	return nueva;
 }
 
