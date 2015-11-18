@@ -20,21 +20,28 @@ Global::Global(){
 	 creaObjetosEscenario();
 	 visibleSize = Director::getInstance()->getVisibleSize();
 }
+void Global::creaArmasNivel(Arma* a){
+	ArmasNivel.push_back(a);
+	CCLOG("tamaño %d", ArmasNivel.size());
+}
 
 void Global::creaArmas()
 {
+	Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
 	//provisional crea un array genérico, en un futuro hay que meter las armas 1 a una
 	for (int i = 0; i < 10; i++){
 		char* nombre = "espada Bastarda numero: ";
 		nombre += i;
-		Arma* armaaux = Arma::create("images/Armas/arma.png", 100, nombre, "punzante");
+
+		
+		Arma* armaaux = Arma::create(t, 100, nombre, "punzante");
 		armaaux->setColor(Color3B(i * 25, i * 25, i * 25));
 		armasTotales.push_back(armaaux);
 	}
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 1; i++) {
 		char* nombre = "espada Bastarda numero: ";
 		nombre += i;
-		Arma* armaaux = Arma::create("images/Armas/arma.png", 100, nombre, "punzante");
+		Arma* armaaux = Arma::create(t, 10*i, nombre, "punzante");
 		armaaux->setColor(Color3B(i * 11, i * 11, i * 11));
 		armasArsenal.push_back(armaaux);
 	}
@@ -65,4 +72,16 @@ Global* Global::getInstance(){
 	}
 
 	return global;
+}
+
+void Global::vaciaArmasNivel(){
+
+	CCLOG("tamaño antes: %d",ArmasNivel.size());
+	ArmasNivel.clear();
+	CCLOG("tamaño despues: %d", ArmasNivel.size());
+	if (ArmasNivel.empty()) CCLOG("esta vacio");
+}
+
+void Global::quitaArmaDeNivel(Arma*a){
+
 }
