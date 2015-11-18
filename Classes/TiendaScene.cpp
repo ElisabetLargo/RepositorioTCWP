@@ -1,4 +1,7 @@
 #include "TiendaScene.h"
+#include "Arma.h"
+#include "Global.h"
+#include "Nivel.h"
 USING_NS_CC;
 
 Scene* TiendaScene::createScene()
@@ -31,9 +34,16 @@ bool TiendaScene::init()
 	//menu
 	auto backBtn = MenuItemImage::create("images/TiendaScene/back_btn.png", "images/TiendaScene/back_btn.png",
 		CC_CALLBACK_1(TiendaScene::returnToScene, this));
+
 	auto menu = Menu::create(backBtn, NULL);
 	menu->setPosition(Point(visibleSize.width - 20, visibleSize.height - 20));
 	addChild(menu, 2);
+
+	auto añadeArmaBtn = MenuItemImage::create("images/Armas/arma.png", "images/Armas/arma.png",
+		CC_CALLBACK_0(TiendaScene::compraArma, this));
+	auto menu2 = Menu::create(añadeArmaBtn, NULL);
+	addChild(menu2, 2);
+
 
 
 	//Fondo
@@ -48,4 +58,15 @@ bool TiendaScene::init()
 void TiendaScene::returnToScene(Ref *pSender){
 
 	Director::getInstance()->popScene();
+}
+
+void TiendaScene::compraArma()
+{
+	int i = random(1, 9);
+	Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
+	Arma* armacomprada = Arma::create(t, 10000*i, "voladora", "punzante");
+	armacomprada->setColor(Color3B(5, 50, 83));
+	Global::getInstance()->armasArsenal.push_back(armacomprada);
+	((Nivel*)(Global::getInstance()->nivel))->addChild(armacomprada,3);
+
 }

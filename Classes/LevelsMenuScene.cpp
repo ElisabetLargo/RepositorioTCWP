@@ -218,32 +218,35 @@ void LevelsMenuScene::goToNivel(Ref *psender,int i){
 	
 
 	Director::getInstance()->pushScene(Global::getInstance()->nivel);
-
+	CCLOG("antes del switch");
 	//Aqui SWITCH con el numero de nivel que es para saber que objetos tenemos que pasarle
 	switch (i)
 	{
 	case 0:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);	
 		break;
 	case 1:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);	
 		break;
 	case 2:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);	
 		break;
 	case 3:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);	
 		break;
 	case 4:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);		
 		break;
 	case 5:
-		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10); // (0,10) para probar
+
+		((Nivel*)Global::getInstance()->nivel)->preparaNivel(0, 10);
 		break;
 
 	default:
 		break;
 	}
+
+
 	
 }
 

@@ -13,6 +13,8 @@ public:
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(TiendaScene);
+private:
+	void compraArma();// test!!!
 };
 
 #endif  
