@@ -21,12 +21,7 @@ public:
 	void CloseMenuCompra();
 	void HacerCompra();
 	void setPointY(int y);
-<<<<<<< HEAD
-	Arma* ClonarArma(Arma*a);
-
-=======
 	void setDesdeTienda(bool estado);
->>>>>>> origin/Rama_Richi
 
 	void setArma(Arma* arma);
 
@@ -38,11 +33,7 @@ public:
 	std::string getNombre();
 	int getDaño();
 	bool getDesdeTienda();
-<<<<<<< HEAD
-	void setDesdeTienda(bool estado);
-=======
 
->>>>>>> origin/Rama_Richi
 	bool enNivel = false;
 
 private:
@@ -53,12 +44,8 @@ private:
 	//cocos2d::Rect areaArma;
 	std::string tipo;
 	std::string nombre;
-<<<<<<< HEAD
-	Arma* armaAComprar;
-=======
 	Arma* esteArma;
 
->>>>>>> origin/Rama_Richi
 	void accionTouch();
 
 
