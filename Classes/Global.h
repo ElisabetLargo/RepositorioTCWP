@@ -22,7 +22,7 @@ public:
 	void añadeArmasANivel(Arma* a);
 	void vaciaArmasNivel();
 	void quitaArmaDeNivel(Arma* a);
-
+	bool juegoEnCurso;
 
 	//std::vector<Vec2*> ObjetosTotalesEscenarioPosiciones;
 	

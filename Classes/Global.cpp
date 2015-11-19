@@ -22,8 +22,8 @@ Global::Global(){
 }
 void Global::añadeArmasANivel(Arma* a){
 	((Nivel*)nivel)->addChild(a, 3);
-	auto rand = random(0, 9);
-	a->setPosition(Point(400+rand*10, 500 +rand * 10));
+	auto rand = random(0, 19);
+	a->setPosition(Point(200+rand*10, 500));
 	ArmasNivel.push_back(a);
 	CCLOG("tamaño %d", ArmasNivel.size());
 }
