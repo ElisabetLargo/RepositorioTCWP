@@ -19,16 +19,10 @@ public:
 
 	std::vector<ObjetoEscenario*> ObjetosTotalesEscenarios;
 	cocos2d::Size visibleSize;
-<<<<<<< HEAD
-	void creaArmasNivel(Arma* a);
-	void vaciaArmasNivel();
-	void quitaArmaDeNivel(Arma* a);
-=======
 	void añadeArmasANivel(Arma* a);
 	void vaciaArmasNivel();
 	void quitaArmaDeNivel(Arma* a);
 	bool juegoEnCurso;
->>>>>>> origin/Rama_Richi
 
 	//std::vector<Vec2*> ObjetosTotalesEscenarioPosiciones;
 	
