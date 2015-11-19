@@ -54,6 +54,9 @@ void Arma::AddListener()
 
 		return false;
 	};
+	listener->onTouchMoved = [=](Touch* touch, Event* event) {
+		if (Global::getInstance()->juegoEnCurso && this->getPosition().y >300) Arma::arrastraArma(touch->getLocation());
+	};
 	listener->onTouchEnded = [=](cocos2d::Touch* touch, cocos2d::Event* event)
 	{
 		Arma::TouchEvent(touch, touch->getLocation());
@@ -70,18 +73,37 @@ void Arma::TouchEvent(cocos2d::Touch * touch, cocos2d::Point _p)
 	accionTouch();
 }
 
+<<<<<<< HEAD
 void Arma::accionTouch(){
 	Point p = this->getPosition();
 	if (p.y <300){
 
+=======
+void Arma::arrastraArma(cocos2d::Vec2 vector)
+{
+	this->setPosition(vector);
+}
+
+void Arma::accionTouch(){
+	Point p = this->getPosition();
+	if (p.y <300){
+	CCLOG("El arma con daño : %d", this->daño);
+>>>>>>> origin/Rama_Richi
 		//CCLOG("Es para añadir a la lista de armas que vamos a usar");
 		if (((Nivel*)Global::getInstance()->nivel)->ContadorArmas <5 && !this->enNivel){
 		
 			//CCLOG("Se puede añadir");
+<<<<<<< HEAD
 			CCLOG("El arma con daño : %d", this->daño);
 			((Nivel*)Global::getInstance()->nivel)->ContadorArmas += 1;
 			//llamar a global
 			Global::getInstance()->creaArmasNivel(this);
+=======
+
+			((Nivel*)Global::getInstance()->nivel)->ContadorArmas += 1;
+			//llamar a global
+			Global::getInstance()->añadeArmasANivel(this->ClonarArma(this));
+>>>>>>> origin/Rama_Richi
 			this->enNivel = true;
 		}
 		else if (this->enNivel) CCLOG("ya esta metida");
@@ -95,6 +117,12 @@ void Arma::accionTouch(){
 
 	else {
 		CCLOG("es para colocar");
+<<<<<<< HEAD
+=======
+		if (!Global::getInstance()->juegoEnCurso) {
+			Global::getInstance()->quitaArmaDeNivel(this);
+		}
+>>>>>>> origin/Rama_Richi
 	}
 
 
@@ -124,12 +152,12 @@ void Arma::setPointY(int y)
 
 void Arma::setArma(Arma* arma)
 {
-	armaAComprar = arma;
+	esteArma = arma;
 }
 
 Arma* Arma::getArma()
 {
-	return armaAComprar;
+	return esteArma;
 }
 
 std::string Arma::getTipo()
@@ -160,6 +188,10 @@ void Arma::setDesdeTienda(bool estado)
 Arma* Arma::ClonarArma(Arma* a){
 
 	Arma* nueva = Arma::create(a->getTexture(),a->daño,a->getNombre(),a->tipo);
+<<<<<<< HEAD
+=======
+	nueva->clon = a;
+>>>>>>> origin/Rama_Richi
 	return nueva;
 }
 

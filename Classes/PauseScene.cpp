@@ -64,9 +64,15 @@ void PauseScene::resumeGameScene(Ref *pSender){
 void PauseScene::goToMainMenuScene(Ref *pSender){
 	CCLOG("me voy a mainmenuScene");
 	Global::getInstance()->vaciaArmasNivel();
+<<<<<<< HEAD
 
 	Global::getInstance()->nivel->removeAllChildren();
 	CCLOG("%d",Global::getInstance()->nivel->getChildrenCount());
+=======
+	Global::getInstance()->juegoEnCurso = false;
+	Global::getInstance()->nivel->removeAllChildren();
+	
+>>>>>>> origin/Rama_Richi
 	Director::getInstance()->popScene();
 	Director::getInstance()->popScene();
 	Director::getInstance()->popScene();

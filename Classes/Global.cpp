@@ -20,7 +20,14 @@ Global::Global(){
 	 creaObjetosEscenario();
 	 visibleSize = Director::getInstance()->getVisibleSize();
 }
+<<<<<<< HEAD
 void Global::creaArmasNivel(Arma* a){
+=======
+void Global::añadeArmasANivel(Arma* a){
+	((Nivel*)nivel)->addChild(a, 3);
+	auto rand = random(0, 19);
+	a->setPosition(Point(200+rand*10, 500));
+>>>>>>> origin/Rama_Richi
 	ArmasNivel.push_back(a);
 	CCLOG("tamaño %d", ArmasNivel.size());
 }
@@ -38,7 +45,11 @@ void Global::creaArmas()
 		armaaux->setColor(Color3B(i * 25, i * 25, i * 25));
 		armasTotales.push_back(armaaux);
 	}
+<<<<<<< HEAD
 	for (int i = 0; i < 13; i++) {
+=======
+	for (int i = 0; i < 1; i++) {
+>>>>>>> origin/Rama_Richi
 		char* nombre = "espada Bastarda numero: ";
 		nombre += i;
 		Arma* armaaux = Arma::create(t, 10*i, nombre, "punzante");
@@ -84,4 +95,16 @@ void Global::vaciaArmasNivel(){
 
 void Global::quitaArmaDeNivel(Arma*a){
 
+<<<<<<< HEAD
+=======
+	for (int i = 0; i<ArmasNivel.size(); i++) {
+		if (ArmasNivel[i] == a) {
+			((Nivel*)nivel)->removeChild(a);
+			a->clon->enNivel = false;
+			a->clon = nullptr;
+			ArmasNivel.erase(ArmasNivel.begin() + i);
+			((Nivel*)nivel)->ContadorArmas--;
+		}
+	}
+>>>>>>> origin/Rama_Richi
 }

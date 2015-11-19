@@ -7,12 +7,14 @@ class Nivel : public cocos2d::Layer
 {
 public:
 	static cocos2d::Scene* createScene();
-															// es int temporalmente debe ser de 
-																		//objetos de la clase ObjetosEscenario   float tiempoMax, int puntosMax, int objetosMoviles[], int posicionesX[], int posicionesY[]
+	// es int temporalmente debe ser de 
 	virtual bool init();
+<<<<<<< HEAD
 
 	void returnToScene(Ref *pSender);
 
+=======
+>>>>>>> origin/Rama_Richi
 	int ContadorArmas;
 
 	int vueltasArsenal;
@@ -25,6 +27,8 @@ private:
 	static int tiempoDelNivel;
 	static int puntosDelNivel;
 	cocos2d::Menu* menuArsenal;
+	//bool juegoEnCurso;
+
 	void muestraUnoMas(Ref *pSender);
 	void muestraUnoMenos(Ref *pSender,int i);
 	void borraArsenal(int superiorinferior);
@@ -34,6 +38,17 @@ private:
 	void abrirArsenal(Ref *pSender);
 	void simulacion(Ref *pSender);
 	void displayArmasNivel();
+<<<<<<< HEAD
+=======
+	void activaDesactivaBoton(cocos2d::MenuItemImage* boton, bool estado);
+	void recorreArmas(int iterador, int posicion, int ancho, int alto, int iteraciones);
+	void activaDesactivaArma(Arma* arma, bool estado);
+	int getEnCurso();
+
+	cocos2d::MenuItemImage* masBtn;
+	cocos2d::MenuItemImage* menosBtn;
+
+>>>>>>> origin/Rama_Richi
 };
 
 #endif  

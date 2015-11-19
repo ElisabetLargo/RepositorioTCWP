@@ -16,21 +16,33 @@ public:
 	void AddListener();
 	void EnableListener(bool b);
 	void TouchEvent(cocos2d::Touch* touch, cocos2d::Point _p);
+	void arrastraArma(cocos2d::Vec2 vector);
 	void CreateMenuCompra();
 	void CloseMenuCompra();
 	void HacerCompra();
 	void setPointY(int y);
+<<<<<<< HEAD
 	Arma* ClonarArma(Arma*a);
 
+=======
+	void setDesdeTienda(bool estado);
+>>>>>>> origin/Rama_Richi
 
 	void setArma(Arma* arma);
+
+	Arma* clon;
 	Arma* getArma();
+	Arma* ClonarArma(Arma*a);
 
 	std::string getTipo();
 	std::string getNombre();
 	int getDaño();
 	bool getDesdeTienda();
+<<<<<<< HEAD
 	void setDesdeTienda(bool estado);
+=======
+
+>>>>>>> origin/Rama_Richi
 	bool enNivel = false;
 
 private:
@@ -41,7 +53,12 @@ private:
 	//cocos2d::Rect areaArma;
 	std::string tipo;
 	std::string nombre;
+<<<<<<< HEAD
 	Arma* armaAComprar;
+=======
+	Arma* esteArma;
+
+>>>>>>> origin/Rama_Richi
 	void accionTouch();
 
 
