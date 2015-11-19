@@ -1,8 +1,10 @@
 #include "Arma.h"
+#include "Nivel.h"
+#include"Global.h"
 
 USING_NS_CC;
 
-Arma::Arma(const std::string & fileName, int daño, std::string nombre, std::string tipo)
+Arma::Arma( int daño, std::string nombre, std::string tipo)
 {
 
 	this->daño = daño;
@@ -18,11 +20,11 @@ Arma::~Arma()
 {
 }
 
-Arma * Arma::create(const std::string & fileName, int daño, std::string nombre, std::string tipo)
+Arma * Arma::create(cocos2d::Texture2D* t, int daño, std::string nombre, std::string tipo)
 {
-	Arma* arma = new Arma(fileName,daño,nombre,tipo);
-	Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(fileName);
-	arma->initWithTexture(texture);
+	Arma* arma = new Arma(daño,nombre,tipo);
+	//Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(fileName);
+	arma->initWithTexture(t);
 	return arma;
 
 		
@@ -31,23 +33,29 @@ Arma * Arma::create(const std::string & fileName, int daño, std::string nombre, 
 	return NULL;*/
 }
 
-
+void Arma::EnableListener(bool b){
+	listener->setEnabled(b);
+}
 void Arma::AddListener()
 {
-	auto listener = cocos2d::EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);
+	listener = cocos2d::EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(false);
 
 	listener->onTouchBegan = [&](cocos2d::Touch* touch, cocos2d::Event* event) {
 		cocos2d::Point p = touch->getLocation();
-		setPointY(p.y);
 		cocos2d::Rect rect = this->getBoundingBox();
 
 		if (rect.containsPoint(p))
 		{
+			setPointY(p.y);
+
 			return true;
 		}
 
 		return false;
+	};
+	listener->onTouchMoved = [=](Touch* touch, Event* event) {
+		if (Global::getInstance()->juegoEnCurso && this->getPosition().y >300) Arma::arrastraArma(touch->getLocation());
 	};
 	listener->onTouchEnded = [=](cocos2d::Touch* touch, cocos2d::Event* event)
 	{
@@ -60,8 +68,66 @@ void Arma::AddListener()
 
 void Arma::TouchEvent(cocos2d::Touch * touch, cocos2d::Point _p)
 {
-	CreateMenuCompra();
-	CCLOG("Has tocado un arma");
+	//CCLOG("Has tocado un arma");
+
+	accionTouch();
+}
+
+<<<<<<< HEAD
+void Arma::accionTouch(){
+	Point p = this->getPosition();
+	if (p.y <300){
+
+=======
+void Arma::arrastraArma(cocos2d::Vec2 vector)
+{
+	this->setPosition(vector);
+}
+
+void Arma::accionTouch(){
+	Point p = this->getPosition();
+	if (p.y <300){
+	CCLOG("El arma con daño : %d", this->daño);
+>>>>>>> origin/Rama_Richi
+		//CCLOG("Es para añadir a la lista de armas que vamos a usar");
+		if (((Nivel*)Global::getInstance()->nivel)->ContadorArmas <5 && !this->enNivel){
+		
+			//CCLOG("Se puede añadir");
+<<<<<<< HEAD
+			CCLOG("El arma con daño : %d", this->daño);
+			((Nivel*)Global::getInstance()->nivel)->ContadorArmas += 1;
+			//llamar a global
+			Global::getInstance()->creaArmasNivel(this);
+=======
+
+			((Nivel*)Global::getInstance()->nivel)->ContadorArmas += 1;
+			//llamar a global
+			Global::getInstance()->añadeArmasANivel(this->ClonarArma(this));
+>>>>>>> origin/Rama_Richi
+			this->enNivel = true;
+		}
+		else if (this->enNivel) CCLOG("ya esta metida");
+
+		else{
+		
+			CCLOG("No puedes usar más");
+		}
+	}
+
+
+	else {
+		CCLOG("es para colocar");
+<<<<<<< HEAD
+=======
+		if (!Global::getInstance()->juegoEnCurso) {
+			Global::getInstance()->quitaArmaDeNivel(this);
+		}
+>>>>>>> origin/Rama_Richi
+	}
+
+
+
+
 }
 
 void Arma::CreateMenuCompra()
@@ -86,12 +152,12 @@ void Arma::setPointY(int y)
 
 void Arma::setArma(Arma* arma)
 {
-	armaAComprar = arma;
+	esteArma = arma;
 }
 
 Arma* Arma::getArma()
 {
-	return armaAComprar;
+	return esteArma;
 }
 
 std::string Arma::getTipo()
@@ -119,5 +185,13 @@ void Arma::setDesdeTienda(bool estado)
 	desdeTienda = estado;
 }
 
+Arma* Arma::ClonarArma(Arma* a){
 
+	Arma* nueva = Arma::create(a->getTexture(),a->daño,a->getNombre(),a->tipo);
+<<<<<<< HEAD
+=======
+	nueva->clon = a;
+>>>>>>> origin/Rama_Richi
+	return nueva;
+}
 

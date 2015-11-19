@@ -20,21 +20,39 @@ Global::Global(){
 	 creaObjetosEscenario();
 	 visibleSize = Director::getInstance()->getVisibleSize();
 }
+<<<<<<< HEAD
+void Global::creaArmasNivel(Arma* a){
+=======
+void Global::añadeArmasANivel(Arma* a){
+	((Nivel*)nivel)->addChild(a, 3);
+	auto rand = random(0, 19);
+	a->setPosition(Point(200+rand*10, 500));
+>>>>>>> origin/Rama_Richi
+	ArmasNivel.push_back(a);
+	CCLOG("tamaño %d", ArmasNivel.size());
+}
 
 void Global::creaArmas()
 {
+	Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
 	//provisional crea un array genérico, en un futuro hay que meter las armas 1 a una
 	for (int i = 0; i < 10; i++){
 		char* nombre = "espada Bastarda numero: ";
 		nombre += i;
-		Arma* armaaux = Arma::create("images/Armas/arma.png", 100, nombre, "punzante");
+
+		
+		Arma* armaaux = Arma::create(t, 100, nombre, "punzante");
 		armaaux->setColor(Color3B(i * 25, i * 25, i * 25));
 		armasTotales.push_back(armaaux);
 	}
-	for (int i = 0; i < 20; i++) {
+<<<<<<< HEAD
+	for (int i = 0; i < 13; i++) {
+=======
+	for (int i = 0; i < 1; i++) {
+>>>>>>> origin/Rama_Richi
 		char* nombre = "espada Bastarda numero: ";
 		nombre += i;
-		Arma* armaaux = Arma::create("images/Armas/arma.png", 100, nombre, "punzante");
+		Arma* armaaux = Arma::create(t, 10*i, nombre, "punzante");
 		armaaux->setColor(Color3B(i * 11, i * 11, i * 11));
 		armasArsenal.push_back(armaaux);
 	}
@@ -65,4 +83,28 @@ Global* Global::getInstance(){
 	}
 
 	return global;
+}
+
+void Global::vaciaArmasNivel(){
+
+	CCLOG("tamaño antes: %d",ArmasNivel.size());
+	ArmasNivel.clear();
+	CCLOG("tamaño despues: %d", ArmasNivel.size());
+	if (ArmasNivel.empty()) CCLOG("esta vacio");
+}
+
+void Global::quitaArmaDeNivel(Arma*a){
+
+<<<<<<< HEAD
+=======
+	for (int i = 0; i<ArmasNivel.size(); i++) {
+		if (ArmasNivel[i] == a) {
+			((Nivel*)nivel)->removeChild(a);
+			a->clon->enNivel = false;
+			a->clon = nullptr;
+			ArmasNivel.erase(ArmasNivel.begin() + i);
+			((Nivel*)nivel)->ContadorArmas--;
+		}
+	}
+>>>>>>> origin/Rama_Richi
 }
