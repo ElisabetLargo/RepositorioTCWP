@@ -11,7 +11,7 @@ public:
 																		//objetos de la clase ObjetosEscenario   float tiempoMax, int puntosMax, int objetosMoviles[], int posicionesX[], int posicionesY[]
 	virtual bool init();
 
-	void returnToScene(Ref *pSender);
+	//bool juegoEnCurso = false;
 
 	int ContadorArmas;
 

@@ -24,6 +24,8 @@ public:
 
 
 	void setArma(Arma* arma);
+
+	Arma* punteroaClon();
 	Arma* getArma();
 
 	std::string getTipo();
@@ -32,7 +34,7 @@ public:
 	bool getDesdeTienda();
 	void setDesdeTienda(bool estado);
 	bool enNivel = false;
-
+	Arma* clon;
 private:
 	bool desdeTienda;
 	int daño;
@@ -41,7 +43,8 @@ private:
 	//cocos2d::Rect areaArma;
 	std::string tipo;
 	std::string nombre;
-	Arma* armaAComprar;
+	Arma* esteArma;
+
 	void accionTouch();
 
 

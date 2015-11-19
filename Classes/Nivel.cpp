@@ -51,7 +51,7 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 	auto alto = ALTOARSENAL;
 	
 	ContadorArmas = 0;
-
+	//juegoEnCurso = false;
 	rectangulo->setScaleX(ancho/rectangulo->getContentSize().width);
 	rectangulo->setScaleY(alto/rectangulo->getContentSize().height);
 	rectangulo->setPosition(Point(ancho/2, alto/2));
@@ -256,7 +256,7 @@ void Nivel::abrirArsenal(Ref *pSender){
 
 void Nivel::simulacion(Ref *pSender){
 
-
+	//juegoEnCurso = true;
 	if (ContadorArmas >= 5){
 		CCLOG("Empieza la simulacion");
 	}
