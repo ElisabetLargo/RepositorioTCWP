@@ -35,6 +35,7 @@ public:
 	bool getDesdeTienda();
 
 	bool enNivel = false;
+	bool colocada = false;
 
 private:
 	bool desdeTienda;
