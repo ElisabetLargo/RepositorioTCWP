@@ -52,6 +52,7 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 	
 	ContadorArmas = 0;
 	Global::getInstance()->juegoEnCurso = false;
+
 	rectangulo->setScaleX(ancho/rectangulo->getContentSize().width);
 	rectangulo->setScaleY(alto/rectangulo->getContentSize().height);
 	rectangulo->setPosition(Point(ancho/2, alto/2));
@@ -60,11 +61,11 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 
 
 	//Arma de prueba arriba
-	Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
+	/*Texture2D* t = Director::getInstance()->getTextureCache()->addImage("images/Armas/arma.png");
 	Arma* a = Arma::create(t, 100, "voladora", "punzante");
 	a->setColor(Color3B(5,50,83));
 	addChild(a, 4);
-	a->setPosition(Point(400,500));
+	a->setPosition(Point(400,500));*/
 
 
 	//FONDO Y BOTONES GENERALES
@@ -75,10 +76,15 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 	auto vestuarioBtn = MenuItemImage::create("images/Nivel/back_btn.png", "images/Nivel/back_btn.png",CC_CALLBACK_1(Nivel::goToVestuario, this));
 	vestuarioBtn->setColor(Color3B(0, 255, 0));
 
+	pauseBtn->setName("botoncito");
+	pauseBtn->setTag(23);
+
 	auto menu1 = Menu::create(pauseBtn, tiendaBtn, vestuarioBtn, NULL);
 	menu1->setPosition(Point(150, visibleSize.height - visibleSize.height / 40));
 	menu1->alignItemsHorizontallyWithPadding(30);
 	addChild(menu1, 1);
+
+
 
 	auto arsenalBtn = MenuItemImage::create("images/Nivel/back_btn.png", "images/Nivel/back_btn.png", CC_CALLBACK_1(Nivel::abrirArsenal, this));
 	arsenalBtn->setColor(Color3B(100, 100, 100));
@@ -111,9 +117,11 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 
 	for (int i = 0; i < Global::getInstance()->armasArsenal.size(); i++) {
 		Arma* arma = Global::getInstance()->armasArsenal[i];
-		arma->enNivel = false;
-		addChild(arma, 3);
-		arma->setVisible(false);
+		if (!this->getChildren().contains(arma)) {
+			arma->enNivel = false;
+			addChild(arma, 3);
+			arma->setVisible(false);
+		}
 	}
 
 
@@ -130,7 +138,10 @@ void Nivel::preparaNivel(int n, int u){  // nivel=numero nivel para colocar
 		Global::getInstance()->ObjetosTotalesEscenarios[i]->setVisible(true);
 	//objetosMoviles[i]->position(Point(posicionesX[i], posicionesY[i]));
 	//addChild(objetosMoviles[i], 2);
+
+
 	}
+	//prueba ? CCLOG(" puedo acceder") : CCLOG("adsfsdsdfg");
 
 }
 
@@ -206,16 +217,22 @@ void Nivel::borraArsenal(int superiorinferior)
 }
 
 void Nivel::goToTienda(Ref *pSender){
-	if(rectangulo->isVisible())abrirArsenal(this);
-	vueltasArsenal = 0;
-	auto scene = TiendaScene::createScene();
-	Director::getInstance()->pushScene(scene);
+	if (!Global::getInstance()->juegoEnCurso){
+
+		if (rectangulo->isVisible())abrirArsenal(this);
+		vueltasArsenal = 0;
+		auto scene = TiendaScene::createScene();
+		Director::getInstance()->pushScene(scene);
+	}
+	
 }
 
 
 void Nivel::goToVestuario(Ref *pSender){
-	auto scene = VestuarioScene::createScene();
-	Director::getInstance()->pushScene(scene);
+	if (!Global::getInstance()->juegoEnCurso){
+		auto scene = VestuarioScene::createScene();
+		Director::getInstance()->pushScene(scene);
+	}
 }
 
 void Nivel::goToPause(Ref *pSender){
@@ -225,43 +242,52 @@ void Nivel::goToPause(Ref *pSender){
 }
 
 void Nivel::abrirArsenal(Ref *pSender){
-	if (Global::getInstance()->armasArsenal.size() > 5) {
-		activaDesactivaBoton(masBtn, true);
-		activaDesactivaBoton(menosBtn, true);
-	}
-	else {
-		activaDesactivaBoton(masBtn, false);
-		activaDesactivaBoton(menosBtn, false);
-	}
-
-	if (rectangulo->isVisible()) {
-		rectangulo->setVisible(false);
-		auto aux = 0;
-
-		for (int i = 0; i < Global::getInstance()->armasArsenal.size(); i++) {
-			Arma* arma = Global::getInstance()->armasArsenal[i];
-			if(arma->isVisible())arma->setVisible(false);
-			arma->EnableListener(false);
+	if (!Global::getInstance()->juegoEnCurso){
+		if (Global::getInstance()->armasArsenal.size() > 5) {
+			activaDesactivaBoton(masBtn, true);
+			activaDesactivaBoton(menosBtn, true);
 		}
-		vueltasArsenal = 0;
-		menuArsenal->setVisible(false);
+		else {
+			activaDesactivaBoton(masBtn, false);
+			activaDesactivaBoton(menosBtn, false);
+		}
+
+		if (rectangulo->isVisible()) {
+			rectangulo->setVisible(false);
+			auto aux = 0;
+
+			quitaArmas();
+
+			vueltasArsenal = 0;
+			menuArsenal->setVisible(false);
+		}
+		else {
+			menuArsenal->setVisible(true);
+			rectangulo->setVisible(true);
+			muestraUnoMas(this);
+		}
 	}
-	else {
-		menuArsenal->setVisible(true);
-		rectangulo->setVisible(true);
-		muestraUnoMas(this);
-	} 
+	
 }
 
 
 void Nivel::simulacion(Ref *pSender){
 
-	Global::getInstance()->juegoEnCurso = true;
-	if (ContadorArmas >= 5){
+	
+	if (!Global::getInstance()->juegoEnCurso){
+		Global::getInstance()->juegoEnCurso = true;
 		CCLOG("Empieza la simulacion");
+		quitaArmas();
+
+		if (rectangulo->isVisible()){
+			rectangulo->setVisible(false);
+			activaDesactivaBoton(masBtn, false);
+			activaDesactivaBoton(menosBtn,false);
+			
+		}
 	}
 	else{
-		CCLOG("Aun puedes usar más armas");
+		CCLOG("Ya estas en simulacion");
 	}
 	
 }
@@ -306,7 +332,10 @@ void Nivel::activaDesactivaArma(Arma * arma, bool estado)
 	arma->EnableListener(estado);
 }
 
-int Nivel::getEnCurso()
-{
-	return 1;
+void Nivel::quitaArmas(){
+	for (int i = 0; i < Global::getInstance()->armasArsenal.size(); i++) {
+		Arma* arma = Global::getInstance()->armasArsenal[i];
+		if (arma->isVisible())arma->setVisible(false);
+		arma->EnableListener(false);
+	}
 }

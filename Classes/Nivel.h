@@ -10,7 +10,7 @@ public:
 	// es int temporalmente debe ser de 
 	virtual bool init();
 	int ContadorArmas;
-
+	//bool prueba = true;
 	int vueltasArsenal;
 	cocos2d::Sprite* rectangulo;
 	void preparaNivel(int n, int u);
@@ -35,10 +35,17 @@ private:
 	void activaDesactivaBoton(cocos2d::MenuItemImage* boton, bool estado);
 	void recorreArmas(int iterador, int posicion, int ancho, int alto, int iteraciones);
 	void activaDesactivaArma(Arma* arma, bool estado);
-	int getEnCurso();
+	void quitaArmas();
 
 	cocos2d::MenuItemImage* masBtn;
 	cocos2d::MenuItemImage* menosBtn;
+	cocos2d::MenuItemImage* tiendaBtn;
+	cocos2d::MenuItemImage* pauseBtn;
+	cocos2d::MenuItemImage* vestuarioBtn;
+	cocos2d::MenuItemImage* arsenalBtn;
+	cocos2d::MenuItemImage* simulacionBtn;
+
+
 
 };
 

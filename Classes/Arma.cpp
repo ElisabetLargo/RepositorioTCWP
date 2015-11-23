@@ -55,7 +55,10 @@ void Arma::AddListener()
 		return false;
 	};
 	listener->onTouchMoved = [=](Touch* touch, Event* event) {
-		if (Global::getInstance()->juegoEnCurso && this->getPosition().y >300) Arma::arrastraArma(touch->getLocation());
+		if (Global::getInstance()->juegoEnCurso && this->getPosition().y >50 && !this->colocada) {
+			Arma::arrastraArma(touch->getLocation());
+
+		}
 	};
 	listener->onTouchEnded = [=](cocos2d::Touch* touch, cocos2d::Event* event)
 	{
@@ -75,12 +78,17 @@ void Arma::TouchEvent(cocos2d::Touch * touch, cocos2d::Point _p)
 
 void Arma::arrastraArma(cocos2d::Vec2 vector)
 {
+
+	if (vector.y > 520) vector.y = 520;
+	if (vector.x < 20) vector.x = 20;
+	else if (vector.x>780) vector.x = 780;
 	this->setPosition(vector);
 }
 
 void Arma::accionTouch(){
 	Point p = this->getPosition();
-	if (p.y <300){
+
+	if (p.y <500 && !Global::getInstance()->juegoEnCurso){
 	CCLOG("El arma con daño : %d", this->daño);
 		//CCLOG("Es para añadir a la lista de armas que vamos a usar");
 		if (((Nivel*)Global::getInstance()->nivel)->ContadorArmas <5 && !this->enNivel){
@@ -101,15 +109,12 @@ void Arma::accionTouch(){
 	}
 
 
-	else {
-		CCLOG("es para colocar");
-		if (!Global::getInstance()->juegoEnCurso) {
-			Global::getInstance()->quitaArmaDeNivel(this);
-		}
+	if (Global::getInstance()->juegoEnCurso){
+		 if (!colocada) this->colocada = true;
 	}
 
-
-
+	else if (!Global::getInstance()->juegoEnCurso) Global::getInstance()->quitaArmaDeNivel(this);
+	
 
 }
 
